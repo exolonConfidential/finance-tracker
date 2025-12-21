@@ -56,7 +56,7 @@ export default function LandingPage() {
           <div className="mx-auto max-w-3xl">
             <h1 className="mb-6 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
               Financial freedom should be <br className="hidden md:block" />
-              <span className="bg-gradient-to-r from-brand-600 to-teal-500 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-brand-600 to-teal-500 bg-clip-text text-transparent">
                 Free for Everyone
               </span>
             </h1>

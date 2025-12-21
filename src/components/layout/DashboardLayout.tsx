@@ -8,7 +8,7 @@ import {
   LogOut,
   Menu,
   TrendingUp,
-  User,
+  Tag
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,10 +31,11 @@ import { useUser } from "@/hooks/useUser";
 
 // 1. Navigation Configuration
 const sidebarItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-  { icon: Wallet, label: "Wallets", href: "/wallets" },
-  { icon: ArrowRightLeft, label: "Transactions", href: "/transactions" },
-  { icon: Settings, label: "Settings", href: "/settings" },
+  { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
+  { icon: Wallet, label: 'Wallets', href: '/wallets' },
+  { icon: Tag, label: 'Categories', href: '/categories' }, // Add this!
+  { icon: ArrowRightLeft, label: 'Transactions', href: '/transactions' },
+  { icon: Settings, label: 'Settings', href: '/settings' },
 ];
 
 export default function DashboardLayout() {
@@ -56,7 +57,7 @@ export default function DashboardLayout() {
       {/* Logo Area */}
       <div className="flex h-16 items-center border-b px-6">
         <Link
-          to="/dashboard"
+          to="/"
           className="flex items-center gap-2"
           onClick={() => setIsMobileOpen(false)}
         >

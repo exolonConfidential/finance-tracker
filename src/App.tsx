@@ -7,6 +7,8 @@ import DashboardLayout from "./components/layout/DashboardLayout";
 import AboutPage from "./pages/AboutPage";
 import { AuthValidator } from "./utils/AuthValidation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import CategoriesPage from "./pages/CategoriesPage";
+import { Toaster } from "sonner";
 
 function App() {
   const queryClient = new QueryClient();
@@ -29,11 +31,13 @@ function App() {
         <Route element = {<AuthValidator/>}>
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/categories" element = {<CategoriesPage/>}/>
           </Route>
         </Route>
         
       </Routes>
     </BrowserRouter>
+    <Toaster/>
     </QueryClientProvider>
   );
 }
