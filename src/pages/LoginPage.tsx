@@ -124,7 +124,7 @@ export default function LoginPage() {
       </div>
 
       {/* 2. RIGHT SIDE - BRANDING (Hidden on Mobile) */}
-      <div className="hidden min-h-screen w-full bg-gray-50 lg:flex items-center justify-center bg-gradient-to-br from-brand-600 to-teal-700 p-12 relative overflow-hidden">
+      <div className="hidden min-h-screen w-full bg-gray-50 lg:flex items-center justify-center bg-linear-to-br from-brand-600 to-teal-700 p-12 relative overflow-hidden">
         {/* Abstract Background Shapes */}
         <div className="absolute top-0 right-0 h-[500px] w-[500px] translate-x-1/3 -translate-y-1/4 rounded-full bg-white/10 blur-[100px]"></div>
         <div className="absolute bottom-0 left-0 h-[500px] w-[500px] -translate-x-1/3 translate-y-1/4 rounded-full bg-brand-900/20 blur-[100px]"></div>

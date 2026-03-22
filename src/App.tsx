@@ -9,6 +9,7 @@ import { AuthValidator } from "./utils/AuthValidation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CategoriesPage from "./pages/CategoriesPage";
 import { Toaster } from "sonner";
+import WalletsPage from "./pages/WalletsPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ function App() {
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/categories" element = {<CategoriesPage/>}/>
+            <Route path="/wallets" element = {<WalletsPage/>}/>
           </Route>
         </Route>
         

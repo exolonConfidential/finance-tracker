@@ -73,7 +73,7 @@ export default function AboutPage() {
             </div>
 
             {/* Right: Abstract Visual */}
-            <div className="relative mx-auto aspect-video w-full max-w-lg overflow-hidden rounded-2xl bg-gradient-to-br from-brand-500 to-teal-600 p-8 shadow-2xl">
+            <div className="relative mx-auto aspect-video w-full max-w-lg overflow-hidden rounded-2xl bg-linear-to-br from-brand-500 to-teal-600 p-8 shadow-2xl">
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
                 <div className="flex h-full flex-col justify-center items-center text-white text-center">
                     <Shield className="h-16 w-16 mb-4 opacity-90" />

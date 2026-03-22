@@ -26,40 +26,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Plus } from "lucide-react";
-import type { CategoryResponse } from "@/api/category";
+import { Loader2, Plus, WalletCards } from "lucide-react";
+import type { Wallet } from "@/api/wallets";
 
-// Validation Schema
-const formSchema = z.discriminatedUnion("type", [
-  z.object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    type: z.literal('EXPENSE'),
-    budgetLimit: z.number().positive().optional(),
-  }),
-  z.object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    type: z.literal('INCOME'),
-  }),
-]);
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  type: z.enum([
+    "CASH",
+    "BANK_ACCOUNT",
+    "CREDIT_CARD",
+    "INVESTMENT",
+    "SAVINGS",
+  ]),
+});
 
 interface Props {
-  onCreate: (values: z.infer<typeof formSchema>) => Promise<CategoryResponse>;
+  onCreate: (values: z.infer<typeof formSchema>) => Promise<Wallet>;
   isLoading: boolean;
 }
 
-export default function AddCategoryDialog({ onCreate, isLoading }: Props) {
+export default function AddWalletDialog({ onCreate, isLoading }: Props) {
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      budgetLimit: undefined,
-    }
+      type: "BANK_ACCOUNT", // Sensible default
+    },
   });
-
-  const type = form.watch("type");
-  console.log(type);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     await onCreate(values);
@@ -70,13 +65,16 @@ export default function AddCategoryDialog({ onCreate, isLoading }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-brand-600 hover:bg-brand-700 text-white gap-2">
-          <Plus className="h-4 w-4" /> Add Category
+        <Button className="bg-brand-600 hover:bg-brand-700 text-white gap-2 shadow-md">
+          <Plus className="h-4 w-4" /> Add Wallet
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>New Category</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <WalletCards className="h-5 w-5 text-brand-600" />
+            New Wallet
+          </DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -89,9 +87,9 @@ export default function AddCategoryDialog({ onCreate, isLoading }: Props) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Wallet Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Groceries" {...field} />
+                    <Input placeholder="e.g. HDFC Bank, Cash" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,7 +101,7 @@ export default function AddCategoryDialog({ onCreate, isLoading }: Props) {
               name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Type</FormLabel>
+                  <FormLabel>Wallet Type</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -114,42 +112,17 @@ export default function AddCategoryDialog({ onCreate, isLoading }: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="EXPENSE">Expense</SelectItem>
-                      <SelectItem value="INCOME">Income</SelectItem>
+                      <SelectItem value="BANK_ACCOUNT">Bank Account</SelectItem>
+                      <SelectItem value="CASH">Cash</SelectItem>
+                      <SelectItem value="CREDIT_CARD">Credit Card</SelectItem>
+                      <SelectItem value="SAVINGS">Savings</SelectItem>
+                      <SelectItem value="INVESTMENT">Investment</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            {type === 'EXPENSE' && (
-              <FormField
-                control={form.control}
-                name="budgetLimit"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Budget Limit</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="e.g. 100"
-                        {...field}
-                        onChange={(e) =>
-                          field.onChange(
-                            e.target.value === ""
-                              ? undefined
-                              : e.target.valueAsNumber
-                          )
-                        }
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
 
             <div className="flex justify-end gap-2 pt-4">
               <Button
@@ -167,7 +140,7 @@ export default function AddCategoryDialog({ onCreate, isLoading }: Props) {
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  "Create"
+                  "Create Wallet"
                 )}
               </Button>
             </div>

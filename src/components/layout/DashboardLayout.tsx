@@ -28,7 +28,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { logout } from "@/api/auth";
 import { useUser } from "@/hooks/useUser";
-
 // 1. Navigation Configuration
 const sidebarItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
