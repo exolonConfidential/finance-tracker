@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { getTransactions, type TransactionFilters } from '@/api/transactions';
+import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
+import { createTrasaction, getTransactions, type TransactionFilters } from '@/api/transactions';
+import { toast } from 'sonner';
 
 
 export const useTransactions = (filters: TransactionFilters) => {
@@ -11,3 +12,21 @@ export const useTransactions = (filters: TransactionFilters) => {
     placeholderData: (previousData) => previousData, // Keeps old data on screen while fetching new page (smooth UX)
   });
 };
+
+export const useCreateTransaction = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['create-transaction'],
+    mutationFn: createTrasaction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['transactions']})
+      queryClient.invalidateQueries({queryKey: ['wallet-analytics']})
+      queryClient.invalidateQueries({queryKey: ['wallets']})
+      queryClient.invalidateQueries({queryKey: ['user-dashboard']})
+      toast.success("Transaction added successfully")
+    },
+    onError: (error:any) => {
+      toast.error(error.response?.data?.message || "Failed to create transaction")
+    }
+  })
+}

@@ -11,6 +11,15 @@ export interface TransactionDto {
   targetWalletName?: string;
   categoryName?: string;
 }
+export interface TransactionRequestDto {
+  amount: number;
+  description?: string;
+  transactionDate: string;
+  type: "INCOME" | "EXPENSE" | "TRANSFER";
+  walletId: number;
+  targetWalletid?: number;
+  categoryid?: string;
+}
 
 // Spring Boot Page structure
 export interface PageResponse<T> {
@@ -39,7 +48,7 @@ export const getTransactions = async (filters: TransactionFilters) => {
   params.append('size', filters.size.toString());
   
   if (filters.startDate) params.append('startDate', `${filters.startDate}T00:00:00`);
-  if (filters.endDate) params.append('endDate', `${filters.endDate}T23:59:59`);
+  if (filters.endDate) params.append('endDate', `${filters.endDate}T00:00:00`);
   if (filters.type) params.append('type', filters.type);
   if (filters.walletId) params.append('walletId', filters.walletId);
   if (filters.categoryId) params.append('categoryId', filters.categoryId);
@@ -47,3 +56,9 @@ export const getTransactions = async (filters: TransactionFilters) => {
   const { data } = await api.get<PageResponse<TransactionDto>>(`/transactions?${params.toString()}`);
   return data;
 };
+
+
+export const createTrasaction = async (data: TransactionRequestDto) => {
+  const  response  = await api.post('/transactions', data);
+  return response.data;
+}

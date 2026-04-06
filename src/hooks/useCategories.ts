@@ -32,7 +32,9 @@ export const useCategories = () => {
                 queryClient.invalidateQueries({ queryKey: ['get-categories'] })
                 toast.success(`Deleted successfully`);
             },
-            onError: () =>{
+            onError: (error) =>{
+                console.log("inside remove category error")
+                console.log(error)
                 toast.error("Some error occured");
             }
         })

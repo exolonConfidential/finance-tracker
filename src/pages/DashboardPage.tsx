@@ -2,7 +2,6 @@ import { useDashboard } from "@/hooks/useDashboard";
 import { useUser } from "@/hooks/useUser";
 import { formatCurrency } from "@/utils/Currency";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { 
     ArrowDownRight, 
     ArrowUpRight, 
@@ -12,6 +11,7 @@ import {
 } from "lucide-react"; 
 import { format } from "date-fns";
 import type { RecentTransaction } from "@/api/dashboard";
+import AddTransactionDialog from "@/components/transactions/AddTransactionDialog";
 
 export default function DashboardPage() {
     // 1. Fetch Data
@@ -37,9 +37,7 @@ export default function DashboardPage() {
             {/* Header */}
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                 <h1 className="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-                <Button className="bg-brand-600 hover:bg-brand-700 text-white shadow-md shadow-brand-100">
-                    + New Transaction
-                </Button>
+                <AddTransactionDialog/>
             </div>
 
             {/* 1. Summary Cards */}
