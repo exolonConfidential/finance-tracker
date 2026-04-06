@@ -35,6 +35,8 @@ import {
   ArchiveRestore,
   Info,
 } from "lucide-react";
+import { format } from "date-fns";
+
 
 export default function WalletsPage() {
   const { wallets, isLoading, createWallet, isCreating, toggleWallet } =
@@ -44,8 +46,8 @@ export default function WalletsPage() {
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   const [dateRange, setDateRange] = useState({
-    startDate: firstDayOfMonth.toISOString().split("T")[0],
-    endDate: today.toISOString().split("T")[0],
+    startDate: format(firstDayOfMonth, "yyyy-MM-dd"),
+    endDate: format(today, "yyyy-MM-dd"),
   });
 
   const { data: analyticsData, isLoading: isLoadingAnalytics } =

@@ -59,7 +59,6 @@ export default function AddCategoryDialog({ onCreate, isLoading }: Props) {
   });
 
   const type = form.watch("type");
-  console.log(type);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     await onCreate(values);
