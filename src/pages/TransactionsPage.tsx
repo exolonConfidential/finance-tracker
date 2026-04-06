@@ -52,8 +52,7 @@ export default function TransactionsPage() {
   
   const [ date, setDate ] = useState<{ from?: Date , to?: Date } | undefined>();
 
-  // --- STATE MANAGEMENT ---
-  // Default to "This Month" and Page 0
+  
   const defaultDateRange = getDateRange("THIS_MONTH");
   const [activeDateFilter, setActiveDateFilter] = useState<string>("THIS_MONTH");
 
@@ -67,10 +66,10 @@ export default function TransactionsPage() {
     categoryId: "",
   });
 
-  // Fetch data using our smart hook
+  // whenever the filter sate changes it refetches the data (tanstack feature)
   const { data: pageData, isLoading, isFetching } = useTransactions(filters);
 
-  // --- HANDLERS ---
+
   const handleDateFilterClick = (
     rangeType: "THIS_MONTH" | "LAST_MONTH" | "LAST_3_MONTHS" | "ALL_TIME",
   ) => {
@@ -78,7 +77,9 @@ export default function TransactionsPage() {
     if (rangeType === "ALL_TIME") {
       setFilters({ ...filters, startDate: "", endDate: "", page: 0 });
     } else {
+      //get the date range from the utility functions
       const dates = getDateRange(rangeType);
+
       setFilters({
         ...filters,
         startDate: dates.startDate,
@@ -89,7 +90,7 @@ export default function TransactionsPage() {
   };
 
   const handleFilterChange = (key: keyof TransactionFilters, value: string) => {
-    setFilters({ ...filters, [key]: value, page: 0 }); // Always reset to page 0 when filtering
+    setFilters({ ...filters, [key]: value, page: 0 }); 
   };
 
   const handlePageChange = (newPage: number) => {
