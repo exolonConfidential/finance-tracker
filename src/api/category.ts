@@ -32,3 +32,19 @@ export const deleteCategory = async (id: string) =>{
     const { data } = await api.delete<DeleteCategoryRes>(`/categories/${id}`)
     return data;
 }
+
+
+export interface CategoryStatsDto {
+  categoryName: string;
+  type: "INCOME" | "EXPENSE";
+  totalAmount: number;
+}
+
+export const getCategoryStats = async (startDate: string, endDate: string) => {
+  const params = new URLSearchParams();
+  params.append('startDate', `${startDate}T00:00:00`);
+  params.append('endDate', `${endDate}T23:59:59`);
+  
+  const { data } = await api.get<CategoryStatsDto[]>(`/transactions/stats?${params.toString()}`);
+  return data;
+};

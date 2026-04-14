@@ -10,12 +10,37 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Trash2, Tag, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
+import CategoryStatsViewer from "@/components/categories/CategoryStatsViewer";
+import { useState } from "react";
+import { getDateRange } from "@/utils/dateRange";
+import { CustomDatePicker } from "@/components/CustomDatePicker";
 
 export default function CategoriesPage() {
+  const defaultDateRange = getDateRange("THIS_MONTH");
   const { categories, isLoading, createCategory, isCreating, deleteCategory } =
     useCategories();
+  const [activeRange, setActiveRange] = useState<
+    "THIS_MONTH" | "LAST_MONTH" | "LAST_3_MONTHS" | "CUSTOM"
+  >("THIS_MONTH");
+  const [dateRange, setDateRange] = useState<{
+    startDate: string;
+    endDate: string;
+  }>(defaultDateRange);
 
-  // Filter categories by type
+  const handleDateRangeChange = (
+    range: "THIS_MONTH" | "LAST_MONTH" | "LAST_3_MONTHS",
+  ) => {
+    setActiveRange(range);
+    setDateRange(getDateRange(range));
+  };
+
+  const handleCustomDateRange = (startDate: string, endDate: string) => {
+    setDateRange({
+      startDate,
+      endDate,
+    });
+  };
+
   const incomeCategories = categories.filter((c) => c.type === "INCOME");
   const expenseCategories = categories.filter((c) => c.type === "EXPENSE");
 
@@ -69,7 +94,6 @@ export default function CategoriesPage() {
                       key={category.id}
                       className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 shadow-sm hover:shadow-md transition-all hover:border-red-100"
                     >
-
                       <div className="flex flex-col ">
                         <span className="font-medium text-gray-700">
                           {category.name}
@@ -79,7 +103,7 @@ export default function CategoriesPage() {
                         </span>
                       </div>
 
-                      <div className="group"> 
+                      <div className="group">
                         <Button
                           variant="ghost"
                           size="icon"
@@ -89,7 +113,6 @@ export default function CategoriesPage() {
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
-
                     </div>
                   ))}
                 </div>
@@ -123,8 +146,7 @@ export default function CategoriesPage() {
                       key={category.id}
                       className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-4 shadow-sm hover:shadow-md transition-all hover:border-emerald-100"
                     >
-
-                       <div className="flex flex-col">
+                      <div className="flex flex-col">
                         <span className="font-medium text-gray-700">
                           {category.name}
                         </span>
@@ -132,7 +154,6 @@ export default function CategoriesPage() {
                           Limit {category.budgetLimit || "not set"}
                         </span>
                       </div>
-
 
                       <div className="group">
                         <Button
@@ -144,7 +165,6 @@ export default function CategoriesPage() {
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
-
                     </div>
                   ))}
                 </div>
@@ -153,6 +173,49 @@ export default function CategoriesPage() {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* CATEGORY STATS SECTION */}
+      <div className="space-y-6">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">
+              Spending Breakdown
+            </h2>
+            <p className="text-sm text-gray-500">
+              See exactly where your money is going.
+            </p>
+          </div>
+
+          {/* Mini Date Toggle */}
+          <div className="flex flex-col items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 p-1 sm:flex sm:flex-row">
+            {["THIS_MONTH", "LAST_MONTH", "LAST_3_MONTHS"].map((item) => (
+              <Button
+                variant="ghost"
+                size="sm"
+                className={
+                  activeRange === item
+                    ? "bg-white shadow-sm text-gray-900"
+                    : "text-gray-500 hover:text-gray-900"
+                }
+                onClick={() => handleDateRangeChange(item as any)}
+              >
+                {item.replace(/_/g, " ")}
+              </Button>
+            ))}
+            <CustomDatePicker
+              activeRange={activeRange}
+              setActiveRange={setActiveRange}
+              setDateRange={handleCustomDateRange}
+            />
+          </div>
+        </div>
+
+        {/* The Reusable Component we built! */}
+        <CategoryStatsViewer
+          startDate={dateRange.startDate}
+          endDate={dateRange.endDate}
+        />
+      </div>
     </div>
   );
 }

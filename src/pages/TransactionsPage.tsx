@@ -34,14 +34,8 @@ import {
   ChevronRight,
   Loader2,
 } from "lucide-react";
-
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import type { DateRange } from "react-day-picker";
 import AddTransactionDialog from "@/components/transactions/AddTransactionDialog";
+import { CustomDatePicker } from "@/components/CustomDatePicker";
 
 export default function TransactionsPage() {
   const { data: user } = useUser();
@@ -49,12 +43,10 @@ export default function TransactionsPage() {
 
   const { wallets } = useWallets();
   const { categories } = useCategories();
-  
-  const [ date, setDate ] = useState<{ from?: Date , to?: Date } | undefined>();
 
-  
   const defaultDateRange = getDateRange("THIS_MONTH");
-  const [activeDateFilter, setActiveDateFilter] = useState<string>("THIS_MONTH");
+  const [activeDateFilter, setActiveDateFilter] =
+    useState<string>("THIS_MONTH");
 
   const [filters, setFilters] = useState<TransactionFilters>({
     page: 0,
@@ -68,7 +60,6 @@ export default function TransactionsPage() {
 
   // whenever the filter sate changes it refetches the data (tanstack feature)
   const { data: pageData, isLoading, isFetching } = useTransactions(filters);
-
 
   const handleDateFilterClick = (
     rangeType: "THIS_MONTH" | "LAST_MONTH" | "LAST_3_MONTHS" | "ALL_TIME",
@@ -88,9 +79,17 @@ export default function TransactionsPage() {
       });
     }
   };
+  const handleCustomDateRange = (startDate: string, endDate: string) => {
+    setFilters({
+      ...filters,
+      page: 0,
+      startDate,
+      endDate,
+    });
+  };
 
   const handleFilterChange = (key: keyof TransactionFilters, value: string) => {
-    setFilters({ ...filters, [key]: value, page: 0 }); 
+    setFilters({ ...filters, [key]: value, page: 0 });
   };
 
   const handlePageChange = (newPage: number) => {
@@ -150,7 +149,7 @@ export default function TransactionsPage() {
             View and filter your financial history.
           </p>
         </div>
-        <AddTransactionDialog/>
+        <AddTransactionDialog />
       </div>
 
       {/* FILTER DASHBOARD */}
@@ -160,72 +159,30 @@ export default function TransactionsPage() {
           <span className="text-sm font-medium text-gray-500 mr-2 flex items-center gap-2">
             <Filter className="h-4 w-4" /> Date Range:
           </span>
-          {['THIS_MONTH', 'LAST_MONTH', 'LAST_3_MONTHS', 'ALL_TIME'].map((range) => (
-            <Button
-              key={range}
-              variant={activeDateFilter === range ? "default" : "outline"}
-              size="sm"
-              className={activeDateFilter === range ? "bg-brand-600 hover:bg-brand-700" : "text-gray-600"}
-              onClick={() => handleDateFilterClick(range as any)}
-            >
-              {range.replace(/_/g, ' ')}
-            </Button>
-          ))}
+          {["THIS_MONTH", "LAST_MONTH", "LAST_3_MONTHS", "ALL_TIME"].map(
+            (range) => (
+              <Button
+                key={range}
+                variant={activeDateFilter === range ? "default" : "outline"}
+                size="sm"
+                className={
+                  activeDateFilter === range
+                    ? "bg-brand-600 hover:bg-brand-700"
+                    : "text-gray-600"
+                }
+                onClick={() => handleDateFilterClick(range as any)}
+              >
+                {range.replace(/_/g, " ")}
+              </Button>
+            ),
+          )}
 
           {/* CUSTOM DATE RANGE PICKER */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={activeDateFilter === "CUSTOM" ? "default" : "outline"}
-                size="sm"
-                className={cn(
-                  "ml-auto",
-                  activeDateFilter === "CUSTOM" ? "bg-brand-600 hover:bg-brand-700" : "text-gray-600"
-                )}
-                onClick={() => setActiveDateFilter("CUSTOM")}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date?.from ? (
-                  date.to ? (
-                    <>
-                      {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
-                    </>
-                  ) : (
-                    format(date.from, "LLL dd, y")
-                  )
-                ) : (
-                  <span>Custom Range</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="end">
-              <Calendar
-                autoFocus
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date as DateRange}
-                onSelect={(newDate) => {
-                  setDate(newDate);
-                  // Only trigger API if both dates are selected
-                  if (newDate?.from && newDate?.to) {
-                    // Using your exact local-to-UTC logic here!
-                    const startStr = format(newDate.from, "yyyy-MM-dd");
-                    const endStr = format(newDate.to, "yyyy-MM-dd");
-                    setFilters({ 
-                        ...filters, 
-                        page: 0,
-                        startDate: startStr, // The API client will append T00:00:00 and .toISOString()
-                        endDate: endStr      // The API client will append T23:59:59.999 and .toISOString()
-                    });
-                  }
-                }}
-                numberOfMonths={2}
-                captionLayout="dropdown"
-                startMonth={new Date("01-01-2020")} // How far back they can go
-                endMonth={new Date()}
-              />
-            </PopoverContent>
-          </Popover>
+          <CustomDatePicker
+            activeRange={activeDateFilter}
+            setActiveRange={setActiveDateFilter}
+            setDateRange={handleCustomDateRange}
+          />
         </div>
 
         {/* Row 2: Select Filters */}

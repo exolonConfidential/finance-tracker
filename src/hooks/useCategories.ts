@@ -1,4 +1,4 @@
-import { createCategory, deleteCategory, getCategories } from "@/api/category"
+import { createCategory, deleteCategory, getCategories, getCategoryStats } from "@/api/category"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner";
 
@@ -47,3 +47,11 @@ export const useCategories = () => {
         deleteCategory: removeCategory.mutateAsync
     }
 }
+
+export const useCategoryStats = (startDate: string, endDate: string) => {
+  return useQuery({
+    queryKey: ['category-stats', startDate, endDate],
+    queryFn: () => getCategoryStats(startDate, endDate),
+    enabled: !!startDate && !!endDate,
+  });
+};

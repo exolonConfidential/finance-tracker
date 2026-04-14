@@ -1,8 +1,9 @@
 import axios from "axios";
 
+//https://finance-tracker-backend-z71j.onrender.com/api
 const api = axios.create(
     {
-        baseURL: "https://finance-tracker-backend-z71j.onrender.com/api",
+        baseURL: "http://localhost:3000/api",
         headers: {
             "Content-Type": "application/json",
         },
