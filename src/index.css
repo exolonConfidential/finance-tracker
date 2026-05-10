@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Tailwind v4 core */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Dark mode (class-based) */
+/* Dark mode (class-based) */
+@custom-variant dark (&:is(.dark *), :is(.dark));
+
+/* ======================================================
+   Tailwind Theme Extensions
+====================================================== */
+@theme inline {
+  /* Smooth, pill-like radiuses for that premium SaaS look */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 8px);
+  --radius-2xl: calc(var(--radius) + 12px);
+
+  /* New Brand Colors: Electric Indigo & Neon Purple */
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5; /* Primary Brand */
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+
+  /* Color aliases (shadcn compatible) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  /* Chart Colors - Updated to vibrant Neon matching your inspiration */
+  --color-chart-1: var(--chart-1); /* Neon Blue */
+  --color-chart-2: var(--chart-2); /* Neon Purple */
+  --color-chart-3: var(--chart-3); /* Vibrant Green (Income) */
+  --color-chart-4: var(--chart-4); /* Vibrant Pink (Expense) */
+  --color-chart-5: var(--chart-5); /* Amber/Orange */
+}
+
+/* ======================================================
+   Design Tokens (Single Source of Truth)
+====================================================== */
+:root {
+  --font-sans: 'Inter', sans-serif;
+  --radius: 0.75rem;
+
+  /* Base colors (Light Mode - Clean, crisp white with indigo accents) */
+  --background: oklch(0.98 0.01 270);
+  --foreground: oklch(0.15 0.02 270);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.02 270);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.02 270);
+  
+  --primary: oklch(0.45 0.2 270); /* Brand 600 */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.95 0.02 270);
+  --secondary-foreground: oklch(0.2 0.05 270);
+  --muted: oklch(0.95 0.02 270);
+  --muted-foreground: oklch(0.55 0.02 270);
+  --accent: oklch(0.95 0.02 270);
+  --accent-foreground: oklch(0.2 0.05 270);
+  
+  --destructive: oklch(0.6 0.2 20); /* Vibrant Red/Pink */
+  --border: oklch(0.9 0.02 270);
+  --input: oklch(0.9 0.02 270);
+  --ring: oklch(0.45 0.2 270);
+
+  /* Charts (Light Mode) */
+  --chart-1: oklch(0.55 0.2 260);
+  --chart-2: oklch(0.55 0.25 300);
+  --chart-3: oklch(0.65 0.2 150);
+  --chart-4: oklch(0.6 0.2 340);
+  --chart-5: oklch(0.7 0.15 40);
+}
+
+/* ======================================================
+   Dark Theme (The Million Dollar Glassmorphic Engine)
+====================================================== */
+.dark {
+  /* Deep Midnight Space Background */
+  
+  --background: oklch(0.13 0.03 275); 
+  --foreground: oklch(0.98 0 0);
+  
+  /* THE MAGIC: Cards are now 20% transparent, blurring the background behind them! */
+  --card: oklch(0.18 0.04 275 / 0.4);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.18 0.04 275 / 0.6);
+  --popover-foreground: oklch(0.98 0 0);
+  
+  /* Vibrant Accents */
+  --primary: oklch(0.6 0.2 270); /* Neon Blue/Purple */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.25 0.05 275 / 0.5);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.2 0.04 275 / 0.5);
+  --muted-foreground: oklch(0.7 0.02 275);
+  --accent: oklch(0.25 0.05 275 / 0.5);
+  --accent-foreground: oklch(0.98 0 0);
+  
+  /* Borders are highly transparent white/blue for a glass edge */
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.08);
+  --ring: oklch(0.6 0.2 270);
+
+  /* Neon Charts for Dark Mode */
+  --chart-1: oklch(0.65 0.2 260); /* Neon Cyan */
+  --chart-2: oklch(0.65 0.25 300); /* Hot Purple */
+  --chart-3: oklch(0.7 0.2 150); /* Toxic Green (Income) */
+  --chart-4: oklch(0.65 0.25 350); /* Neon Pink (Expense) */
+  --chart-5: oklch(0.75 0.15 40);
+}
+
+/* ======================================================
+   Base Styles & Custom Utility Classes
+====================================================== */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    font-family: var(--font-sans);
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom Tailwind v4 Utilities 
+  You can now use `class="glass-panel"` on any div!
+*/
+@utility glass-panel {
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 20px var(--primary);
+}
+
+@layer base {
+  /* ADD THIS HTML BLOCK */
+  html {
+    @apply scroll-smooth;
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    font-family: var(--font-sans);
+    @apply bg-background text-foreground;
+  }
+}
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    font-family: var(--font-sans);
+    @apply bg-background text-foreground;
+  }
+
+  /* THE HACK: Stop Chrome/Safari from turning autofilled inputs white! */
+  /* THE ULTIMATE AUTOFILL HACK */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--foreground) !important;
+    caret-color: var(--foreground) !important;
+    /* Forces the background to stay transparent infinitely */
+    transition: background-color 5000s ease-in-out 0s !important;
+    background-color: transparent !important;
+  }
+}
+
+/* ======================================================
+   Scrollbar Hiding Engine
+====================================================== */
+@layer base {
+  /* Hides the main window scrollbar (Fixes the Landing Page) */
+  html, body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+  }
+  
+  html::-webkit-scrollbar, 
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+/* Custom Tailwind v4 Utility. 
+  Add 'no-scrollbar' to any div that needs to scroll invisibly! 
+*/
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
